@@ -1,0 +1,17 @@
+{
+    "name": "Trivago Case Study",
+    "description": "Trivago Software Engineer Case Study",
+    "require": {
+        "slim/slim": "^3.0",
+        "php-di/slim-bridge": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ETL\\": "app",
+            "Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    }
+}
