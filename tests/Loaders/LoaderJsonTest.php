@@ -1,8 +1,9 @@
 <?php
+
 namespace Tests\Loaders;
 
-use Tests\TestCase;
 use ETL\Models\Loader;
+use Tests\TestCase;
 
 class LoaderJsonTest extends TestCase
 {
@@ -11,17 +12,18 @@ class LoaderJsonTest extends TestCase
 
     protected $Loader;
 
-    public function setUp() {
-        # Removing all outputed files
-        foreach(glob(__DIR__.'/../data/*.json') as $jsonFile) {
-            if(basename($jsonFile) != 'json_output_test_json_fixed.json') {
+    public function setUp()
+    {
+        // Removing all outputed files
+        foreach (glob(__DIR__.'/../data/*.json') as $jsonFile) {
+            if (basename($jsonFile) != 'json_output_test_json_fixed.json') {
                 unlink($jsonFile);
             }
         }
 
         $this->data = [
-            [1,'PHP Developer','Mazen Kenjrawi'],
-            [4,'Dummy Classes','Foo Bar'],
+            [1, 'PHP Developer', 'Mazen Kenjrawi'],
+            [4, 'Dummy Classes', 'Foo Bar'],
         ];
 
         $this->headingFields = ['id', 'Title', 'Name'];
@@ -29,14 +31,16 @@ class LoaderJsonTest extends TestCase
         $this->Loader = new Loader();
     }
 
-    public function tearDown() {
-        # Removing all outputed files
-        foreach(glob(__DIR__.'/../data/*.json') as $jsonFile) {
-            if(basename($jsonFile) != 'json_output_test_json_fixed.json') {
+    public function tearDown()
+    {
+        // Removing all outputed files
+        foreach (glob(__DIR__.'/../data/*.json') as $jsonFile) {
+            if (basename($jsonFile) != 'json_output_test_json_fixed.json') {
                 unlink($jsonFile);
             }
         }
     }
+
     /** @test */
     public function test_generating_json_file()
     {
