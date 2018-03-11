@@ -1,12 +1,11 @@
 <?php
+
 namespace Tests;
 
-use Tests\TestCase;
 use ETL\Models\ETL;
-
 use ETL\Models\ExtractorCSV;
-use ETL\Models\Transformer;
 use ETL\Models\Loader;
+use ETL\Models\Transformer;
 
 class ETLTest extends TestCase
 {
@@ -16,15 +15,16 @@ class ETLTest extends TestCase
     protected $Transformer;
     protected $Loader;
 
-    public function setUp() {
-        $this->Extractor = new ExtractorCSV;
-        $this->Transformer = new Transformer;
-        $this->Loader = new Loader;
+    public function setUp()
+    {
+        $this->Extractor = new ExtractorCSV();
+        $this->Transformer = new Transformer();
+        $this->Loader = new Loader();
         $this->ETL = new ETL($this->Extractor, $this->Transformer, $this->Loader);
     }
 
-    public function tearDown() {
-        
+    public function tearDown()
+    {
     }
 
     /** @test */
@@ -51,7 +51,7 @@ class ETLTest extends TestCase
         $sortBy = [1 => 'ASC'];
         $config = ['file_path' => __DIR__.'./data/csv_main_sample.csv'];
         $expectedHash = md5($this->Extractor->extract($config)->getArgumentsHash().md5(serialize($sortBy)));
-        
+
         $this->assertEquals($this->ETL->extract($config)->transform($sortBy)->getArgumentsHash(), $expectedHash);
     }
 
@@ -65,6 +65,6 @@ class ETLTest extends TestCase
         $ETL = $this->ETL->extract($config)->transform($sortBy)->load('json', __DIR__.'./data/');
 
         $this->assertEquals($ETL->getArgumentsHash(), $expectedHash);
-        $this->assertEquals($ETL->getResponse(),  __DIR__.'./data/json_'.$ETL->getArgumentsHash().'.json');
+        $this->assertEquals($ETL->getResponse(), __DIR__.'./data/json_'.$ETL->getArgumentsHash().'.json');
     }
 }
