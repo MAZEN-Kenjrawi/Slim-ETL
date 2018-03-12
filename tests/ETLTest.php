@@ -40,6 +40,7 @@ class ETLTest extends TestCase
 
         $sortBy = [];
         $config = ['file_path' => __DIR__.'./data/csv_main_sample.csv'];
+        var_dump(__DIR__.'./data/csv_main_sample.csv');
         $expectedHash = md5($this->Extractor->extract($config)->getArgumentsHash().md5(serialize($sortBy)));
 
         $this->assertEquals($this->ETL->extract($config)->transform($sortBy)->getArgumentsHash(), $expectedHash);
