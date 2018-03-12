@@ -36,11 +36,10 @@ class ETLTest extends TestCase
     /** @test */
     public function test_extract_config_hash()
     {
-        $config = ['file_path' => __DIR__.'./data/csv_main_sample.csv'];
+        $config = ['file_path' => __DIR__.'/data/csv_main_sample.csv'];
 
         $sortBy = [];
-        $config = ['file_path' => __DIR__.'./data/csv_main_sample.csv'];
-        var_dump(__DIR__.'./data/csv_main_sample.csv');
+        $config = ['file_path' => __DIR__.'/data/csv_main_sample.csv'];
         $expectedHash = md5($this->Extractor->extract($config)->getArgumentsHash().md5(serialize($sortBy)));
 
         $this->assertEquals($this->ETL->extract($config)->transform($sortBy)->getArgumentsHash(), $expectedHash);
@@ -50,7 +49,7 @@ class ETLTest extends TestCase
     public function test_transform_and_hash()
     {
         $sortBy = [1 => 'ASC'];
-        $config = ['file_path' => __DIR__.'./data/csv_main_sample.csv'];
+        $config = ['file_path' => __DIR__.'/data/csv_main_sample.csv'];
         $expectedHash = md5($this->Extractor->extract($config)->getArgumentsHash().md5(serialize($sortBy)));
 
         $this->assertEquals($this->ETL->extract($config)->transform($sortBy)->getArgumentsHash(), $expectedHash);
@@ -61,11 +60,11 @@ class ETLTest extends TestCase
     {
         require_once __DIR__.'/../bootstrap/functions.php';
         $sortBy = [1 => 'ASC'];
-        $config = ['file_path' => __DIR__.'./data/csv_main_sample.csv'];
+        $config = ['file_path' => __DIR__.'/data/csv_main_sample.csv'];
         $expectedHash = md5($this->Extractor->extract($config)->getArgumentsHash().md5(serialize($sortBy)));
-        $ETL = $this->ETL->extract($config)->transform($sortBy)->load('json', __DIR__.'./data/');
+        $ETL = $this->ETL->extract($config)->transform($sortBy)->load('json', __DIR__.'/data/');
 
         $this->assertEquals($ETL->getArgumentsHash(), $expectedHash);
-        $this->assertEquals($ETL->getResponse(), __DIR__.'./data/json_'.$ETL->getArgumentsHash().'.json');
+        $this->assertEquals($ETL->getResponse(), __DIR__.'/data/json_'.$ETL->getArgumentsHash().'.json');
     }
 }
