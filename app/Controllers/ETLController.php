@@ -2,14 +2,12 @@
 
 namespace ETL\Controllers;
 
+use ETL\Models\ETL;
+use ETL\Support\Contracts\ExtractorInterface;
+use ETL\Support\Contracts\LoaderInterface;
+use ETL\Support\Contracts\TransformerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-
-use ETL\Support\Contracts\ExtractorInterface;
-use ETL\Support\Contracts\TransformerInterface;
-use ETL\Support\Contracts\LoaderInterface;
-
-use ETL\Models\ETL;
 
 class ETLController
 {
@@ -22,7 +20,9 @@ class ETLController
     protected $sort_by = [];
 
     protected $ETL;
-    public function __construct(ExtractorInterface $Extractor, TransformerInterface $Transformer, LoaderInterface $Loader, $format = '', $filters = '', $sort = '') {
+
+    public function __construct(ExtractorInterface $Extractor, TransformerInterface $Transformer, LoaderInterface $Loader, $format = '', $filters = '', $sort = '')
+    {
         $this->Extractor = $Extractor;
         $this->Transformer = $Transformer;
         $this->Loader = $Loader;
@@ -30,17 +30,18 @@ class ETLController
         $this->ETL = new ETL($Extractor, $Transformer, $Loader);
     }
 
-    private function getArgumentsArray($passedString = '', $defaultControl = '') {
-        if($passedString == '') {
+    private function getArgumentsArray($passedString = '', $defaultControl = '')
+    {
+        if ($passedString == '') {
             return [];
         }
         $array = [];
         $entries = explode('&', $passedString);
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             $fieldReq = explode('-', $entry);
-            if(count($fieldReq) > 0 && isset($fieldReq[1])) {
+            if (count($fieldReq) > 0 && isset($fieldReq[1])) {
                 $array[$fieldReq[0]] = $fieldReq[1];
-            } elseif($defaultControl != '') {
+            } elseif ($defaultControl != '') {
                 $array[$entry] = $defaultControl;
             }
         }
@@ -48,11 +49,13 @@ class ETLController
         return $array;
     }
 
-    private function setSort($passedsort = '') {
+    private function setSort($passedsort = '')
+    {
         $this->sort_by = $this->getArgumentsArray($passedsort, 'ASC');
     }
 
-    private function setFilters($passedfilters = '') {
+    private function setFilters($passedfilters = '')
+    {
         $this->filters = $this->getArgumentsArray($passedfilters);
     }
 
@@ -60,16 +63,17 @@ class ETLController
     {
         $defaultConfig = [
             'file_path' => './data_storage/hotels.csv',
-            'filters' => [
+            'filters'   => [
                 'name'      => 'trim|sanitize_ascii',
                 'address'   => 'trim',
                 'stars'     => 'trim|hotel_stars',
                 'contact'   => 'trim',
                 'phone'     => 'trim',
-                'uri'       => 'clean_url'
-            ]
+                'uri'       => 'clean_url',
+            ],
         ];
         $responseETL['status'] = 'error';
+
         try {
             $responseETL['file'] = $this->ETL
                 ->extract($defaultConfig)
@@ -77,7 +81,7 @@ class ETLController
                 ->load('json', './data_storage/')
                 ->getResponse();
             $responseETL['status'] = 'success';
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $responseETL['error_messages'] = $e->getMessage();
         }
 
@@ -86,12 +90,14 @@ class ETLController
         die;
     }
 
-    protected function APIResponse($format = 'json') {
+    protected function APIResponse($format = 'json')
+    {
         $defaultConfig = [
             'file_path' => './data_storage/hotels.csv',
-            'filters' => $this->filters
+            'filters'   => $this->filters,
         ];
         $responseETL['status'] = 'error';
+
         try {
             $responseETL['file'] = $this->ETL
                 ->extract($defaultConfig)
@@ -99,7 +105,7 @@ class ETLController
                 ->load($format, './data_storage/')
                 ->getResponse();
             $responseETL['status'] = 'success';
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $responseETL['error_messages'] = $e->getMessage();
         }
 
@@ -108,14 +114,16 @@ class ETLController
         die;
     }
 
-    public function index(Request $request, Response $response, $format = '', $filters = '', $sort = '') {
+    public function index(Request $request, Response $response, $format = '', $filters = '', $sort = '')
+    {
         $this->setFilters($filters);
         $this->setSort($sort);
 
         $this->APIResponse($format);
     }
 
-    public function by_format(Request $request, Response $response, $format = '') {
+    public function by_format(Request $request, Response $response, $format = '')
+    {
         $this->APIResponse($format);
     }
 }

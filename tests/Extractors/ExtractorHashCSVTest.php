@@ -1,14 +1,16 @@
 <?php
+
 namespace Tests\Extractors;
 
-use Tests\TestCase;
 use ETL\Models\ExtractorCSV;
+use Tests\TestCase;
 
 class ExtractorHashCSVTest extends TestCase
 {
     protected $Extractor;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->Extractor = new ExtractorCSV();
     }
 
@@ -17,12 +19,12 @@ class ExtractorHashCSVTest extends TestCase
     {
         $config = [
             'file_path' => __DIR__.'/../data/csv_main_sample_1.csv',
-            'filters' => [0 => 'valid_int', 1 => 'trim|strip_tags|clean_string', 2 => 'trim|strip_tags|clean_string', 3 => 'valid_float']
+            'filters'   => [0 => 'valid_int', 1 => 'trim|strip_tags|clean_string', 2 => 'trim|strip_tags|clean_string', 3 => 'valid_float'],
         ];
         $csvExtractor = $this->Extractor->extract($config);
 
         $expectedHash = md5(filemtime(__DIR__.'/../data/csv_main_sample_1.csv').serialize($config));
-        
+
         $this->assertEquals($expectedHash, $csvExtractor->getArgumentsHash());
     }
 }
