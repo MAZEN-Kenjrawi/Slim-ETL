@@ -1,5 +1,5 @@
 # Slim-ETL
-[![StyleCI](https://styleci.io/repos/124799393/shield?branch=master)](https://styleci.io/repos/124799393)
+[![StyleCI](https://styleci.io/repos/124799393/shield?branch=master)](https://styleci.io/repos/124799393) [![CircleCI](https://circleci.com/gh/MAZEN-Kenjrawi/Slim-ETL/tree/master.svg?style=svg)](https://circleci.com/gh/MAZEN-Kenjrawi/Slim-ETL/tree/master)
 
 This application is a REST API, which functions as an ETL and responsible for extracting data from the desired CSV file located in “public_html/data_storage”. 
 
